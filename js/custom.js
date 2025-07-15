@@ -274,18 +274,48 @@ $(document).ready(function() {
   // View Details buttons open product modal
   $(document).on('click', '.view-details-btn', function(e) {
     e.preventDefault();
-    document.getElementById('product-details-modal').style.display = 'flex';
+    var $card = $(this).closest('.product-card');
+    var imgSrc = $card.find('img.product-img').attr('src');
+    var name = $card.find('h3').text();
+    var desc = $card.find('.product-desc').text();
+    var price = $card.find('.product-price').text();
+    var owner = $card.find('.product-owner').html();
+    // Update modal content
+    var $modal = $('#product-details-modal');
+    $modal.find('img').first().attr('src', imgSrc);
+    $modal.find('h3').first().text(name);
+    $modal.find('p').first().text(desc);
+    // Optionally update price/owner if you add those fields to the modal
+    $modal.find('.product-modal-price').remove();
+    $modal.find('.product-modal-owner').remove();
+    $modal.find('h3').after('<div class="product-modal-price" style="color:#388e3c;font-weight:700;margin-bottom:4px;">'+price+'</div>');
+    $modal.find('h3').after('<div class="product-modal-owner" style="color:#1976d2;font-size:0.98rem;margin-bottom:8px;">'+owner+'</div>');
+    // Reset rating and comments
+    $modal.find('.star-rating span').removeClass('selected');
+    $modal.find('.product-modal-comments').html('');
+    $modal.find('.add-comment-input').val('');
+    $modal.css('display', 'flex');
   });
   $('#product-details-modal').on('click', function(e) {
     if (e.target === this) {
       this.style.display = 'none';
     }
   });
-  // Add to Cart in product modal opens cart modal
-  $('#product-details-modal .custom-button-flat').on('click', function(e) {
+  // Add to Cart in product modal shows demo message
+  $('#product-details-modal .custom-button-flat').off('click').on('click', function(e) {
     e.preventDefault();
-    document.getElementById('product-details-modal').style.display = 'none';
-    document.getElementById('cart-modal').style.display = 'flex';
+    // Show a styled alert or message
+    if ($('#not-official-marketplace-alert').length === 0) {
+      $('body').append('<div id="not-official-marketplace-alert" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:10050;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;border-radius:14px;max-width:340px;width:90vw;padding:28px 18px;box-shadow:0 4px 32px rgba(0,0,0,0.18);text-align:center;position:relative;"><button id="close-marketplace-alert" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:1.3rem;color:#888;cursor:pointer;">&times;</button><h3 style="color:#b71c1c;margin-bottom:12px;">Demo Only</h3><div style="color:#333;font-size:1.08rem;margin-bottom:10px;">This is not the official Kampus Mart marketplace.<br><br>To buy or sell, please download the official app.</div><a href="https://play.google.com/store/apps/details?id=com.kampusmart" target="_blank" style="display:inline-block;margin-top:8px;padding:8px 18px;background:#1976d2;color:#fff;border-radius:6px;text-decoration:none;font-weight:600;">Download App</a></div></div>');
+    } else {
+      $('#not-official-marketplace-alert').show();
+    }
+  });
+  // Close the alert
+  $(document).on('click', '#close-marketplace-alert, #not-official-marketplace-alert', function(e) {
+    if (e.target.id === 'close-marketplace-alert' || e.target.id === 'not-official-marketplace-alert') {
+      $('#not-official-marketplace-alert').hide();
+    }
   });
   // Screenshot modal logic
   $(document).on('click', '.screenshot-thumb', function() {
@@ -365,4 +395,53 @@ $(document).ready(function() {
     $('#content-popup-body').html(contentHtml);
     $('#content-popup-modal').css('display', 'flex');
   };
+
+  // --- Add interactive rating and comments to product details modal ---
+  // Add star rating logic
+  if ($('#product-details-modal .star-rating').length === 0) {
+    var $modal = $('#product-details-modal');
+    $modal.find('span[style*="color:#FFD600"]').replaceWith('<span class="star-rating">'+
+      '<span data-val="1">&#9733;</span>'+
+      '<span data-val="2">&#9733;</span>'+
+      '<span data-val="3">&#9733;</span>'+
+      '<span data-val="4">&#9733;</span>'+
+      '<span data-val="5">&#9733;</span>'+
+    '</span>');
+  }
+  $(document).on('mouseenter', '#product-details-modal .star-rating span', function() {
+    var val = parseInt($(this).data('val'));
+    $(this).parent().children().each(function(i) {
+      $(this).toggleClass('selected', i < val);
+    });
+  });
+  $(document).on('mouseleave', '#product-details-modal .star-rating', function() {
+    var selected = $(this).data('selected') || 0;
+    $(this).children().each(function(i) {
+      $(this).toggleClass('selected', i < selected);
+    });
+  });
+  $(document).on('click', '#product-details-modal .star-rating span', function() {
+    var val = parseInt($(this).data('val'));
+    $(this).parent().data('selected', val);
+    $(this).parent().children().each(function(i) {
+      $(this).toggleClass('selected', i < val);
+    });
+  });
+  // Add comment logic
+  if ($('#product-details-modal .product-modal-comments').length === 0) {
+    var $modal = $('#product-details-modal');
+    $modal.find('input[type="text"]').after('<div class="product-modal-comments" style="background:#f5f5f5; border-radius:8px; padding:10px; margin:8px 0; max-height:80px; overflow:auto;"></div>');
+    $modal.find('input[type="text"]').addClass('add-comment-input');
+  }
+  $(document).on('keypress', '#product-details-modal .add-comment-input', function(e) {
+    if (e.which === 13) {
+      var val = $(this).val().trim();
+      if (val) {
+        var $comments = $('#product-details-modal .product-modal-comments');
+        $comments.append('<div><strong>You:</strong> '+$('<div>').text(val).html()+'</div>');
+        $(this).val('');
+        $comments.scrollTop($comments[0].scrollHeight);
+      }
+    }
+  });
 });

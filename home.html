@@ -166,34 +166,36 @@
   </div>
   <!-- Product Details Modal (Demo) -->
   <div id="product-details-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:16px; max-width:400px; width:90vw; padding:32px 24px; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.18);">
-      <button onclick="document.getElementById('product-details-modal').style.display='flex'" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
-      <img src="img/dummay-img.png" alt="Product" style="width:100%; border-radius:12px; margin-bottom:18px;">
-      <h3>Product Name (Demo)</h3>
-      <p style="color:#666;">This is a demo of the product details page in the Kampus Mart app. Here, users can view product info, adjust quantity, rate, and comment.</p>
-      <div style="margin:16px 0; display:flex; align-items:center; gap:8px;">
+    <div style="background:#fff; border-radius:14px; max-width:320px; width:92vw; padding:18px 12px 20px 12px; position:relative; box-shadow:0 6px 24px rgba(0,0,0,0.16);">
+      <button onclick="document.getElementById('product-details-modal').style.display='flex'" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:1.3rem; cursor:pointer;">&times;</button>
+      <img src="img/dummay-img.png" alt="Product" style="width:100%; border-radius:10px; margin-bottom:12px; max-height:140px; object-fit:cover;">
+      <h3 style="font-size:1.15rem; margin-bottom:6px;">Product Name (Demo)</h3>
+      <!-- Dynamic price and owner will be inserted here by JS -->
+      <p style="color:#666; font-size:0.97rem; margin-bottom:10px;">This is a demo of the product details page in the Kampus Mart app. Here, users can view product info, adjust quantity, rate, and comment.</p>
+      <div style="margin:10px 0 8px 0; display:flex; align-items:center; gap:6px;">
         <label for="quantity" style="font-weight:600;">Quantity:</label>
-        <input id="quantity" type="number" min="1" value="1" style="width:60px; padding:4px 8px; border-radius:6px; border:1px solid #ccc;">
+        <input id="quantity" type="number" min="1" value="1" style="width:48px; padding:3px 6px; border-radius:5px; border:1px solid #ccc; font-size:0.98rem;">
       </div>
-      <div style="margin:16px 0;">
+      <div style="margin:10px 0 8px 0;">
         <span style="font-weight:600;">Your Rating:</span>
-        <span style="color:#FFD600; font-size:1.3rem;">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+        <span style="color:#FFD600; font-size:1.1rem;"></span> <!-- Will be replaced by .star-rating -->
       </div>
-      <div style="margin:16px 0;">
+      <div style="margin:10px 0 8px 0;">
         <span style="font-weight:600;">Comments:</span>
-        <div style="background:#f5f5f5; border-radius:8px; padding:10px; margin:8px 0; max-height:80px; overflow:auto;">
-          <div style="margin-bottom:6px;"><strong>Alice:</strong> Great product!</div>
-          <div><strong>Bob:</strong> Is this still available?</div>
-        </div>
-        <input type="text" placeholder="Add a comment..." style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #ccc;">
+        <input type="text" placeholder="Add a comment..." style="width:100%; padding:5px 8px; border-radius:5px; border:1px solid #ccc; font-size:0.97rem; margin-top:4px;">
+        <!-- .product-modal-comments will be inserted by JS -->
       </div>
-      <button class="custom-button-flat" style="width:100%; margin-top:10px;">Add to Cart (Demo)</button>
+      <button class="custom-button-flat" style="width:100%; margin-top:8px; font-size:1.01rem; padding:7px 0;">Add to Cart (Demo)</button>
     </div>
   </div>
   <!-- Floating Cart Button -->
   <button id="floating-cart-btn" style="position:fixed; bottom:90px; right:32px; z-index:10001; background:#ffb300; color:#fff; border:none; border-radius:50%; width:60px; height:60px; box-shadow:0 4px 16px rgba(0,0,0,0.18); font-size:2rem; cursor:pointer; display:flex; align-items:center; justify-content:center;">
     <span style="font-size:2rem;">&#128722;</span>
   </button>
+  <!-- Floating Home Button -->
+  <a href="index.html" id="floating-home-btn" title="Back to Landing Page" style="position:fixed; bottom:90px; left:32px; z-index:10001; background:#ffd54f; color:#333; border:none; border-radius:50%; width:54px; height:54px; box-shadow:0 4px 16px rgba(255,202,40,0.18); font-size:2.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; text-decoration:none;">
+    <span style="font-size:2.1rem;">&#8962;</span>
+  </a>
   <!-- Cart Modal (Demo) -->
   <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:10002; align-items:center; justify-content:center;">
     <div style="background:#fff; border-radius:16px; max-width:400px; width:90vw; padding:32px 24px; position:relative; box-shadow:0 8px 32px rgba(0,0,0,0.18);">
